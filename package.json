@@ -1,0 +1,55 @@
+{
+  "name": "gatsby-starter-hello-world",
+  "private": true,
+  "description": "A simplified bare-bones starter for Gatsby",
+  "version": "0.1.0",
+  "license": "MIT",
+  "proxy": "http://localhost:4242",
+  "scripts": {
+    "build": "gatsby build",
+    "develop": "GATSBY_GRAPHQL_IDE=playground gatsby develop",
+    "format": "prettier --write \"**/*.{js,jsx,json,md}\"",
+    "start": "npm run develop",
+    "serve": "gatsby serve",
+    "clean": "gatsby clean",
+    "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\" && exit 1"
+  },
+  "dependencies": {
+    "@stripe/react-stripe-js": "^1.1.2",
+    "@stripe/stripe-js": "^1.6.0",
+    "babel-plugin-styled-components": "^1.10.7",
+    "creditcard.js": "^2.1.6",
+    "gatsby": "^2.21.37",
+    "gatsby-cli": "^2.12.40",
+    "gatsby-image": "^2.4.5",
+    "gatsby-plugin-manifest": "^2.4.9",
+    "gatsby-plugin-offline": "^3.2.7",
+    "gatsby-plugin-react-svg": "^3.0.0",
+    "gatsby-plugin-sharp": "^2.6.9",
+    "gatsby-plugin-styled-components": "^3.3.2",
+    "gatsby-source-filesystem": "^2.3.8",
+    "gatsby-source-strapi": "^0.0.12",
+    "gatsby-transformer-sharp": "^2.5.3",
+    "react": "^16.12.0",
+    "react-async-script-loader": "^0.3.0",
+    "react-dom": "^16.12.0",
+    "react-paypal-button-v2": "^2.6.2",
+    "react-redux": "^7.2.0",
+    "redux": "^4.0.5",
+    "redux-persist": "^6.0.0",
+    "reselect": "^4.0.0",
+    "sal.js": "^0.7.6",
+    "styled-components": "^5.1.1"
+  },
+  "devDependencies": {
+    "env-cmd": "^10.1.0",
+    "prettier": "2.0.5"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gatsbyjs/gatsby-starter-hello-world"
+  },
+  "bugs": {
+    "url": "https://github.com/gatsbyjs/gatsby/issues"
+  }
+}
