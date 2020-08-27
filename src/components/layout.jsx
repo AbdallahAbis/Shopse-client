@@ -1,12 +1,17 @@
+import { graphql, useStaticQuery } from "gatsby"
 import React from "react"
-
-import { createGlobalStyle } from "styled-components"
+import { connect } from "react-redux"
+import { createStructuredSelector } from "reselect"
 import sal from "sal.js"
 import "sal.js/dist/sal.css"
-
+import { createGlobalStyle } from "styled-components"
 import config from "../config"
 import * as fontFiles from "../fonts/fonts"
+import { fetchProducts } from "../state/shop/shop.actions"
+import { selectLoading } from "../state/shop/shop.selectors"
 import Header from "./header"
+import Loader from "./loader"
+import device from "../theme/media"
 
 const GlobalStyles = createGlobalStyle`
 @font-face {
@@ -36,12 +41,15 @@ const GlobalStyles = createGlobalStyle`
     --font-primary: 'Europa';
 
     --space-vSmall: 1rem;
+
 }
 ::selection {
     background-color: var(--color-tertiary);
     color: var(--color-secondary);
 }
- 
+ div{
+   -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+  }
 
 *,*::before, *::after{
     padding: 0;
@@ -50,23 +58,43 @@ const GlobalStyles = createGlobalStyle`
 }
 
 html{
-    font-size: 62.5%;
-    box-sizing: border-box;
+  box-sizing: border-box;
+  font-size: 62.5%;
+
+    // Media Query ...................
+    @media ${device.tabPort} {
+     font-size: 52.5%;
+    }
+    @media ${device.verySmallPhone} {
+     font-size: 42.5%;
+    }
 }
 
 body{
     font-family: var(--font-primary);
     font-size: 1.6rem;
     font-weight: 300;
-    padding: 0 5rem;
+    padding: ${({ location }) => (location.pathname === "/" ? "0" : " 0 5rem")};
     color: var(--color-text);
     background: var(--color-secondary);
+
+     // Media Query ...................
+   
+      @media ${device.phone} {
+    padding: ${({ location }) => (location.pathname === "/" ? "0" : " 0 2rem")};
+      }
     
 }
 
 a {
     text-decoration: none;
     color: var(--color-text);
+}
+input{
+  border: 0.5px solid var(--color-tertiary);
+    border-top: none;
+    border-right: none;
+    border-left: none;
 }
 select{
    -webkit-appearance: none;
@@ -83,17 +111,213 @@ select{
 }
 `
 
-const Layout = ({ children, location }) => {
+const Layout = ({ children, location, loading, products, fetchProducts }) => {
+  const data = useStaticQuery(graphql`
+    {
+      products: strapi {
+        men: man {
+          clothes: men_clothes {
+            title
+            slug
+            description
+            price
+            available
+            thumbnail {
+              url
+              imageFile {
+                childImageSharp {
+                  fluid {
+                    ...GatsbyImageSharpFluid_withWebp_noBase64
+                  }
+                }
+              }
+            }
+            images {
+              url
+              imageFile {
+                childImageSharp {
+                  fluid {
+                    ...GatsbyImageSharpFluid_withWebp_noBase64
+                  }
+                }
+              }
+            }
+            __typename
+            updated_at
+          }
+          shoes: men_shoes {
+            title
+            slug
+            description
+            price
+            available
+            thumbnail {
+              url
+              imageFile {
+                childImageSharp {
+                  fluid {
+                    ...GatsbyImageSharpFluid_withWebp_noBase64
+                  }
+                }
+              }
+            }
+            images {
+              url
+              imageFile {
+                childImageSharp {
+                  fluid {
+                    ...GatsbyImageSharpFluid_withWebp_noBase64
+                  }
+                }
+              }
+            }
+            __typename
+            updated_at
+          }
+          accessories: men_accessories {
+            title
+            slug
+            description
+            price
+            available
+            thumbnail {
+              url
+              imageFile {
+                childImageSharp {
+                  fluid {
+                    ...GatsbyImageSharpFluid_withWebp_noBase64
+                  }
+                }
+              }
+            }
+            images {
+              url
+              imageFile {
+                childImageSharp {
+                  fluid {
+                    ...GatsbyImageSharpFluid_withWebp_noBase64
+                  }
+                }
+              }
+            }
+            __typename
+            updated_at
+          }
+        }
+        women: woman {
+          clothes: women_clothes {
+            title
+            slug
+            description
+            price
+            available
+            thumbnail {
+              url
+              imageFile {
+                childImageSharp {
+                  fluid {
+                    ...GatsbyImageSharpFluid_withWebp_noBase64
+                  }
+                }
+              }
+            }
+            images {
+              url
+              imageFile {
+                childImageSharp {
+                  fluid {
+                    ...GatsbyImageSharpFluid_withWebp_noBase64
+                  }
+                }
+              }
+            }
+            __typename
+            updated_at
+          }
+          shoes: women_shoes {
+            title
+            slug
+            description
+            price
+            available
+            thumbnail {
+              url
+              imageFile {
+                childImageSharp {
+                  fluid {
+                    ...GatsbyImageSharpFluid_withWebp_noBase64
+                  }
+                }
+              }
+            }
+            images {
+              url
+              imageFile {
+                childImageSharp {
+                  fluid {
+                    ...GatsbyImageSharpFluid_withWebp_noBase64
+                  }
+                }
+              }
+            }
+            __typename
+            updated_at
+          }
+          accessories: women_accessories {
+            title
+            slug
+            description
+            price
+            available
+            thumbnail {
+              url
+              imageFile {
+                childImageSharp {
+                  fluid {
+                    ...GatsbyImageSharpFluid_withWebp_noBase64
+                  }
+                }
+              }
+            }
+            images {
+              url
+              imageFile {
+                childImageSharp {
+                  fluid {
+                    ...GatsbyImageSharpFluid_withWebp_noBase64
+                  }
+                }
+              }
+            }
+            __typename
+            updated_at
+          }
+        }
+      }
+    }
+  `)
   React.useEffect(() => {
     sal({ threshold: 0, rootMargin: "80%" })
   })
-  return (
+  React.useEffect(() => {
+    fetchProducts(data.products)
+  }, [data, fetchProducts])
+  return loading ? (
+    <Loader />
+  ) : (
     <>
-      <GlobalStyles />
+      <GlobalStyles location={location} />
       <Header location={location} />
       <main>{children}</main>
     </>
   )
 }
 
-export default Layout
+const mapStateToProps = createStructuredSelector({
+  loading: selectLoading,
+})
+const mapDispatchToProps = dispatch => ({
+  fetchProducts: data => dispatch(fetchProducts(data)),
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Layout)

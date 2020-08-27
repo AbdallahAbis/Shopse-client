@@ -10,6 +10,11 @@ const cartPersistConfig = {
   storage,
   whitelist: ["cartItems"],
 }
+const utilsPersistConfig = {
+  key: "utils",
+  storage,
+  whitelist: ["sortBy", "category", "searchValue", "searchInputStatus"],
+}
 const shopPersistConfig = {
   key: "shop",
   storage,
@@ -18,7 +23,7 @@ const shopPersistConfig = {
 
 const rootReducer = combineReducers({
   cart: persistReducer(cartPersistConfig, cartReducer),
-  utils: utilsReducer,
+  utils: persistReducer(utilsPersistConfig, utilsReducer),
   shop: persistReducer(shopPersistConfig, shopReducer),
 })
 

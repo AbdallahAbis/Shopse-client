@@ -1,7 +1,7 @@
 import Img from "gatsby-image"
 import React, { useState } from "react"
 import styled from "styled-components"
-import { slideRight } from "../utils/keyframes"
+import { slideImages } from "../utils/keyframes"
 
 const SliderContainer = styled.div`
   height: 100%;
@@ -33,7 +33,7 @@ const ImageContainer = styled.div`
   top: 50%;
   left: 50%;
   .gatsby-image-wrapper {
-    animation: ${slideRight} 0.5s both;
+    animation: ${slideImages} 2s both;
     border: 1px solid var(--color-secondary);
     width: 100%;
     height: 100%;
@@ -47,7 +47,7 @@ const ImageContainer = styled.div`
   }
 `
 
-const Slider = ({ width, images }) => {
+const Slider = ({ images }) => {
   const [activeIndex, setActiveIndex] = useState(images.length - 1)
 
   const slidePrev = () => {
@@ -78,7 +78,7 @@ const Slider = ({ width, images }) => {
         .map((image, i) =>
           images.indexOf(image) >= activeIndex ? (
             <ImageContainer rotate={i} key={i}>
-              <Img fluid={image.localFile.childImageSharp.fluid} />
+              <Img fluid={image.imageFile.childImageSharp.fluid} />
             </ImageContainer>
           ) : null
         )}

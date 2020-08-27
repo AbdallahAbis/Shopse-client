@@ -1,6 +1,8 @@
 import React from "react"
 import styled from "styled-components"
 import SortBy from "./sort"
+import Categories from "./categories"
+import device from "../theme/media"
 
 const Container = styled.div`
   height: 10rem;
@@ -15,15 +17,18 @@ const Container = styled.div`
   }
   p {
     color: var(--color-text);
-    margin-bottom: var(--space-vSmall);
+  }
+
+  // Media Query ...................
+  @media ${device.tabPort} {
+    margin: 5rem 0;
   }
 `
 
-const ItemsHeader = () => (
+const ItemsHeader = ({ location }) => (
   <Container>
     <div>
-      <p>Clothing</p>
-      <h1>Coats & Jackets</h1>
+      <Categories location={location} />
     </div>
     <SortBy />
   </Container>

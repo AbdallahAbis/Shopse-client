@@ -2,9 +2,8 @@ import ShopActionTypes from "./shop.types"
 
 const INITIAL_STATE = {
   sex: "women",
-  men: [],
-  women: [],
-  isLoading: true,
+  products: {},
+  loading: true,
 }
 
 const shopReducer = (state = INITIAL_STATE, action) => {
@@ -15,17 +14,11 @@ const shopReducer = (state = INITIAL_STATE, action) => {
 
         sex: state.sex === "women" ? "men" : "women",
       }
-    case ShopActionTypes.FETCH_SHOP_DATA_MEN:
+    case ShopActionTypes.FETCH_SHOP_PRODUCTS:
       return {
         ...state,
-        men: action.payload,
-        isLoading: false,
-      }
-    case ShopActionTypes.FETCH_SHOP_DATA_WOMEN:
-      return {
-        ...state,
-        women: action.payload,
-        isLoading: false,
+        products: { ...state.products, ...action.payload },
+        loading: false,
       }
     default:
       return state

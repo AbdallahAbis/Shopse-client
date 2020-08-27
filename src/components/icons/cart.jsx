@@ -7,6 +7,7 @@ import { toggleCartHidden } from "../../state/cart/cart.actions"
 import {
   selectCartItems,
   selectToggleHidden,
+  selectCartTotal,
 } from "../../state/cart/cart.selectors"
 import CartItem from "../cart-item"
 import EmptyMessage from "../empty-message"
@@ -38,21 +39,22 @@ const CartDropdownContainer = styled.div`
 
   position: absolute;
   top: 5rem;
-  right: 0;
+  right: 1rem;
 
   border-radius: 3rem;
   border-top-right-radius: 0;
 
-  box-shadow: 0px 5px 14px -5px #000;
+  box-shadow: 0px 10px 27px -20px #000;
+  overflow: hidden;
 `
 const IconBackground = styled.div`
   position: absolute;
-  top: -10%;
+  top: 0%;
   right: 0;
   height: 5rem;
   width: 6rem;
   background: var(--color-secondary);
-  box-shadow: 0px 19px 14px -5px #000000;
+  z-index: 200;
 `
 const InnerContainer = styled.div`
   visibility: hidden;
@@ -84,8 +86,10 @@ const CartBody = styled.div`
   position: absolute;
   top: 10%;
   left: 0;
-  box-sizing: border-box;
-  overflow: scroll;
+  box-sizing: content-box;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  padding-right: ${({ scrollWidth }) => `${scrollWidth}px`};
 `
 
 const TotalCount = styled.div`
@@ -175,6 +179,17 @@ const CartFooter = styled.div`
     transform: translateX(-50%);
   }
 `
+const TotalContainer = styled.div`
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+
+  .price {
+    font-size: 1.6rem;
+  }
+`
 
 const SVG = () => (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
@@ -183,10 +198,11 @@ const SVG = () => (
   </svg>
 )
 
-const CartIcon = ({ cartItems, isHidden, toggleCartHidden }) => {
+const CartIcon = ({ cartItems, isHidden, toggleCartHidden, totalPrice }) => {
   const dropdownRef = useRef(null)
   const backgroundRef = useRef(null)
   const iconRef = useRef(null)
+  const bodyRef = useRef(null)
   useEffect(() => {
     function handleClickOutside(e) {
       const element = e.target
@@ -217,24 +233,31 @@ const CartIcon = ({ cartItems, isHidden, toggleCartHidden }) => {
         </TotalCount>
       </SVGContainer>
       <InnerContainer>
+        <IconBackground ref={backgroundRef} />
         <CartDropdownContainer ref={dropdownRef}>
-          <IconBackground ref={backgroundRef} />
           <TitleContainer>
             <h2>YOUR ITEMS</h2>
           </TitleContainer>
-          <CartBody>
+          <CartBody
+            ref={bodyRef}
+            scrollWidth={
+              bodyRef.current &&
+              bodyRef.current.offsetWidth - bodyRef.current.clientWidth
+            }
+          >
             {cartItems.length === 0 ? (
               <EmptyMessage place="cart">
-                Tour cart is empty, Please Add an Item
+                Your cart is empty, Please add some items
               </EmptyMessage>
             ) : (
               cartItems.map((item, i) => <CartItem item={item} key={i} />)
             )}
           </CartBody>
           <CartFooter>
-            <Link to="/cart" onClick={toggleCartHidden}>
-              VIEW CART
-            </Link>
+            <TotalContainer>
+              <p>TOTAL</p>
+              <p className="price">${totalPrice}</p>
+            </TotalContainer>
             <Link to="/checkout" onClick={toggleCartHidden}>
               CHECKOUT
             </Link>
@@ -248,6 +271,7 @@ const CartIcon = ({ cartItems, isHidden, toggleCartHidden }) => {
 const mapStateToProps = createStructuredSelector({
   isHidden: selectToggleHidden,
   cartItems: selectCartItems,
+  totalPrice: selectCartTotal,
 })
 const mapDispatchToProps = dispatch => ({
   toggleCartHidden: () => dispatch(toggleCartHidden()),

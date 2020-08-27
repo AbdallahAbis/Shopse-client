@@ -8,7 +8,7 @@ module.exports = {
   },
   proxy: {
     prefix: "/api",
-    url: "http://localhost:4242",
+    url: "http://localhost:1999",
   },
   plugins: [
     {
@@ -19,13 +19,11 @@ module.exports = {
       },
     },
     {
-      resolve: `gatsby-source-strapi`,
+      resolve: `gatsby-source-graphql`,
       options: {
-        apiURL: process.env.DEPLOY_URL
-          ? "https://shopse.herokuapp.com"
-          : "http://localhost:1337",
-        queryLimit: 1000,
-        contentTypes: [`men`, `women`, `user`],
+        typeName: "STRAPI",
+        fieldName: "strapi",
+        url: "http://localhost:1337/graphql",
       },
     },
     {

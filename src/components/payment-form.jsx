@@ -96,7 +96,6 @@ const PaymentForm = () => {
     if (name === "name") {
       const error = checkName(value)
       setCardError({ ...cardError, name: error })
-      console.log(!error)
 
       !error && setCardInfo({ ...cardInfo, [name]: value })
       return
@@ -126,10 +125,8 @@ const PaymentForm = () => {
     }
 
     setCardInfo({ ...cardInfo, [name]: value })
-    console.log(cardInfo)
   }
 
-  console.log(cardInfo)
   return (
     <PaymentContainer>
       <h1>Card Details</h1>

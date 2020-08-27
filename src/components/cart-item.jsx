@@ -1,13 +1,12 @@
-import React from "react"
-import styled from "styled-components"
 import Img from "gatsby-image"
-
+import React from "react"
 import { connect } from "react-redux"
+import styled from "styled-components"
 import { removeItem } from "../state/cart/cart.actions"
 import Remove from "./icons/remove"
 
 const Container = styled.div`
-  width: 100%;
+  max-width: 100%;
   height: 10rem;
   display: grid;
   grid-template-columns: 1fr 2fr 2.5rem 1fr;
@@ -63,16 +62,16 @@ const RemoveItem = styled(Remove)`
 `
 
 const CartItem = ({ item, removeItemFromCart }) => {
-  const { Title, Price, Quantity, Thumbnail } = item
+  const { title, price, quantity, thumbnail } = item
   return (
     <Container>
       <RemoveItem item={item} />
-      <Img fluid={Thumbnail.childImageSharp.fluid} alt={Title} />
-      <h6>{Title}</h6>
+      <Img fluid={thumbnail.imageFile.childImageSharp.fluid} alt={title} />
+      <h6>{title}</h6>
       <ItemsCount>
-        <p>{Quantity}</p>
+        <p>{quantity}</p>
       </ItemsCount>
-      <p>${Price.toFixed(2) * Quantity}</p>
+      <p>${price.toFixed(2) * quantity}</p>
     </Container>
   )
 }

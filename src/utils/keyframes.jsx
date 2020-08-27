@@ -47,3 +47,14 @@ export const slideRight = keyframes`
   opacity: 1;
 }
 `
+export const slideImages = keyframes`
+0%{
+  transform: translateX(-300%);
+  opacity: 0;
+
+}
+100%{
+  transform: none;
+  opacity: 1;
+}
+`

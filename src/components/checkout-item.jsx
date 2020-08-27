@@ -4,6 +4,7 @@ import { connect } from "react-redux"
 import styled, { css } from "styled-components"
 import { removeItem, addItem } from "../state/cart/cart.actions"
 import Remove from "./icons/remove"
+import device from "../theme/media"
 
 const quantityButtons = css`
   padding: 1rem 0.5rem;
@@ -19,6 +20,18 @@ const Container = styled.div`
   grid-gap: 5rem;
   padding: 3rem 0;
   border-bottom: 1px solid var(--color-primary);
+
+  // Media Query ...................
+
+  @media ${device.tabPort} {
+    grid-gap: 2rem;
+    &:not(:last-child) {
+      border-bottom: 1px solid var(--color-primary);
+    }
+  }
+  @media ${device.phone} {
+    grid-template-columns: 2.2fr 1fr 7rem 0.5fr;
+  }
 `
 const ImageContainer = styled.div`
   height: 12rem;
@@ -29,6 +42,12 @@ const ImageContainer = styled.div`
     justify-self: center;
     align-self: stretch;
     border-radius: 5px;
+  }
+
+  // Media Query ...................
+
+  @media ${device.phone} {
+    display: none;
   }
 `
 const ItemTitle = styled.h3`
@@ -93,27 +112,27 @@ const ItemPriceContainer = styled.div`
   }
 `
 const CheckoutItem = ({ item, removeItem, addItem }) => {
-  const { Title, Price, Quantity, Thumbnail } = item
+  const { title, price, quantity, thumbnail } = item
   return (
     <Container>
       <ImageContainer>
-        <Img fluid={Thumbnail.childImageSharp.fluid} alt={Title} />
+        <Img fluid={thumbnail.imageFile.childImageSharp.fluid} alt={title} />
       </ImageContainer>
-      <ItemTitle>{Title}</ItemTitle>
+      <ItemTitle>{title}</ItemTitle>
       <ItemQuantity>
         <Minus
           onClick={() => removeItem(item)}
-          className={Quantity === 1 && "disabled"}
+          className={quantity === 1 && "disabled"}
         >
           &#x2212;
         </Minus>
         <QuantityText>
-          <p>{Quantity}</p>
+          <p>{quantity}</p>
         </QuantityText>
         <Plus onClick={() => addItem(item)}>&#x2b;</Plus>
       </ItemQuantity>
       <ItemPriceContainer>
-        <p>{Price.toFixed(2) * Quantity}</p>
+        <p>{price.toFixed(2) * quantity}</p>
       </ItemPriceContainer>
       <Remove item={item} />
     </Container>

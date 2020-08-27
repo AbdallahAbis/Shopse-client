@@ -2,10 +2,17 @@ import { createSelector } from "reselect"
 
 const selectShop = state => state.shop
 
-export const selectIsLoading = createSelector(
+export const selectLoading = createSelector(
   [selectShop],
-  data => data.isLoading
+  data => data.loading
 )
 export const selectSex = createSelector([selectShop], data => data.sex)
-export const selectShopMen = createSelector([selectShop], data => data.men)
-export const selectShopWomen = createSelector([selectShop], data => data.women)
+export const selectProducts = createSelector(
+  [selectShop],
+  data => data.products
+)
+export const selectAllProducts = createSelector([selectShop], data => {
+  const men = [].concat.apply([], Object.values(data.products.men))
+  const women = [].concat.apply([], Object.values(data.products.women))
+  return [...men, ...women]
+})

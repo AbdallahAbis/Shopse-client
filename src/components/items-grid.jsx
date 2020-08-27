@@ -4,19 +4,16 @@ import React from "react"
 import { connect } from "react-redux"
 import { createStructuredSelector } from "reselect"
 import styled from "styled-components"
+import { selectProducts, selectSex } from "../state/shop/shop.selectors"
 import {
-  selectIsLoading,
-  selectSex,
-  selectShopMen,
-  selectShopWomen,
-} from "../state/shop/shop.selectors"
-import {
+  selectCategory,
   selectSearchValue,
   selectSortMethod,
 } from "../state/utils/utils.reducer"
 import { slideDown } from "../utils/keyframes"
 import { SortAndSearch } from "../utils/sortAndSearch"
 import EmptyMessage from "./empty-message"
+import device from "../theme/media"
 
 const Container = styled.div`
   margin: 0 5rem 20rem 5rem;
@@ -27,6 +24,16 @@ const Container = styled.div`
   align-items: center;
   grid-gap: 5rem;
   transition: all 0.1s;
+
+  // Media Query ...................
+  @media ${device.tabPort} {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    margin: 0 0 20rem 0;
+    grid-gap: 2rem;
+  }
+  @media ${device.phone} {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
 `
 const InnerContainer = styled.div`
   height: 55rem;
@@ -40,6 +47,11 @@ const InnerContainer = styled.div`
       width: 100%;
     }
   }
+
+  // Media Query ...................
+  @media ${device.phone} {
+    height: 37rem;
+  }
 `
 const ImageContainer = styled(Link)`
   display: inline-block;
@@ -50,6 +62,11 @@ const ImageContainer = styled(Link)`
   .gatsby-image-wrapper {
     max-width: 100%;
     height: 100%;
+  }
+
+  // Media Query ...................
+  @media ${device.phone} {
+    height: 80%;
   }
 `
 const Info = styled.div`
@@ -65,6 +82,11 @@ const Info = styled.div`
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-end;
+
+  // Media Query ...................
+  @media ${device.phone} {
+    height: 20%;
+  }
 `
 const Title = styled(Link)`
   font-weight: 300;
@@ -75,13 +97,37 @@ const Price = styled(Link)`
   font-weight: 700;
 `
 
-const ItemsGrid = ({ men, women, sex, loading, sortMethod, searchValue }) => {
-  let currentSex = sex === "women" ? women : men
-  const products = SortAndSearch(currentSex, sortMethod, searchValue)
+const ItemsGrid = ({
+  allProducts,
+  sex,
+  sortMethod,
+  searchValue,
+  category,
+  location,
+}) => {
+  let currentSex = location.pathname.includes("/men/")
+    ? allProducts.men
+    : allProducts.women
 
-  console.log(products, loading)
+  const products = SortAndSearch(currentSex, sortMethod, searchValue, category)
 
-  return products.length === 0 && !loading ? (
+  const generatePath = (category, product) => {
+    if (category && category !== "categories" && sex && product)
+      return `/${sex}/products/${category}/${product.slug}`
+    if (!sex || !product) return `/${sex}/products/`
+
+    const typeName = product.__typename
+    const setCategory = typeName.includes("Clothes")
+      ? "clothes"
+      : typeName.includes("Shoes")
+      ? "shoes"
+      : typeName.includes("Accessories")
+      ? "accessories"
+      : category
+    return `/${sex}/products/${setCategory}/${product.slug}`
+  }
+
+  return !products || products.length === 0 ? (
     <EmptyMessage>
       Sorry for letting you down, We don't have such an Item.
     </EmptyMessage>
@@ -94,23 +140,23 @@ const ItemsGrid = ({ men, women, sex, loading, sortMethod, searchValue }) => {
         >
           <div>
             <ImageContainer
-              to={`/${sex}/${product.Slug}`}
+              to={generatePath(category, product)}
               aria-label="see product's details"
             >
-              <Img fluid={product.Thumbnail.childImageSharp.fluid} />
+              <Img fluid={product.thumbnail.imageFile.childImageSharp.fluid} />
             </ImageContainer>
             <Info>
               <Title
-                to={`/${sex}/${product.Slug}`}
+                to={generatePath(category, product)}
                 aria-label="check product's details"
               >
-                {product.Title}
+                {product.title}
               </Title>
               <Price
-                to={`/${sex}/${product.Slug}`}
+                to={generatePath(category, product)}
                 aria-label="check product's details"
               >
-                ${product.Price.toFixed(2)}
+                ${product.price.toFixed(2)}
               </Price>
             </Info>
           </div>
@@ -122,11 +168,10 @@ const ItemsGrid = ({ men, women, sex, loading, sortMethod, searchValue }) => {
 
 const mapStateToProps = createStructuredSelector({
   sex: selectSex,
-  men: selectShopMen,
-  women: selectShopWomen,
-  loading: selectIsLoading,
+  allProducts: selectProducts,
   sortMethod: selectSortMethod,
   searchValue: selectSearchValue,
+  category: selectCategory,
 })
 
 export default connect(mapStateToProps)(ItemsGrid)

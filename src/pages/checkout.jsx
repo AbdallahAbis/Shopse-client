@@ -10,6 +10,9 @@ import Layout from "../components/layout"
 import api from "../components/stripe/api"
 import StripeForm from "../components/stripe/stripe-form"
 import { selectCartItems, selectCartTotal } from "../state/cart/cart.selectors"
+import device from "../theme/media"
+
+// Stripe API
 const stripePromise = api.getPublicStripeKey().then(key => loadStripe(key))
 
 const Container = styled.div`
@@ -18,12 +21,28 @@ const Container = styled.div`
   height: calc(100vh - var(--header));
   align-items: center;
   max-height: calc(100vh - var(--header));
+
+  // Media Query ...................
+
+  @media ${device.tabPort} {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr;
+    margin-bottom: 5rem;
+  }
 `
 const InfoContainer = styled.div`
   padding-top: 8rem;
   padding-left: 3rem;
   height: 100%;
   position: relative;
+
+  // Media Query ...................
+
+  @media ${device.tabPort} {
+    grid-row: 1;
+    padding-left: 0;
+    padding-bottom: 10rem;
+  }
 `
 const CheckoutContainer = styled.div`
   background-color: var(--color-primary);
@@ -34,12 +53,30 @@ const CheckoutContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  position: fixed;
+  position: absolute;
   right: 5rem;
   top: 50%;
   transform: translateY(-41%);
   flex: auto;
   padding: 0 4rem;
+
+  // Media Query ...................
+
+  @media ${device.tabPort} {
+    grid-row: 2;
+    width: 95%;
+    height: 100%;
+    position: relative;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    transform: none;
+    margin: 0;
+    justify-self: center;
+    padding: 1rem 2rem;
+    margin-bottom: 9rem;
+  }
 `
 
 const CheckoutFooter = styled.div`
@@ -55,12 +92,31 @@ const CheckoutFooter = styled.div`
   grid-template-columns: 2.5fr 1.3fr;
   div {
     border-top: 0.5px solid rgb(44, 45, 49, 0.2);
-  }
-
-  div {
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
+
+    // Media Query ...................
+
+    @media ${device.tabPort} {
+      height: 100%;
+      margin: auto 0;
+      border-top: none;
+    }
+  }
+
+  // Media Query ...................
+
+  @media ${device.tabPort} {
+    padding: 0 4rem;
+    width: 100%;
+    display: block;
+    height: 7rem;
+
+    background: var(--color-secondary);
+    box-shadow: 0px 0px 2px 2px rgba(0, 0, 0, 0.1);
+    z-index: 5000;
   }
 `
 const Title = styled.h1`
@@ -69,17 +125,17 @@ const Title = styled.h1`
   margin-bottom: 5rem;
 `
 
-const CheckoutPage = ({ cartItems, total }) => {
+const CheckoutPage = ({ cartItems, total, location }) => {
   return (
-    <Layout>
+    <Layout location={location}>
       {cartItems.length === 0 ? (
         <EmptyMessage>Your cart is empty, Please Add an Item</EmptyMessage>
       ) : (
         <Container>
           <InfoContainer>
             <Title>We are glad you're here!</Title>
-            {cartItems.map(item => (
-              <CheckoutItem item={item} key={item.id} />
+            {cartItems.map((item, i) => (
+              <CheckoutItem item={item} key={i} />
             ))}
             <CheckoutFooter>
               <div>
@@ -88,7 +144,6 @@ const CheckoutPage = ({ cartItems, total }) => {
               </div>
             </CheckoutFooter>
           </InfoContainer>
-          {/* <PaymentForm /> */}
           <CheckoutContainer>
             <Elements stripe={stripePromise}>
               <StripeForm cartTotalAmount={total} />

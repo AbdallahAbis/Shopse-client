@@ -1,11 +1,39 @@
 import React from "react"
 import { connect } from "react-redux"
 import { createStructuredSelector } from "reselect"
-import styled from "styled-components"
+import styled, { keyframes } from "styled-components"
 import { changeSex } from "../state/shop/shop.actions"
 import { selectSex } from "../state/shop/shop.selectors"
+import { Link } from "gatsby"
+import { useEffect } from "react"
+import device from "../theme/media"
 
-const Border = styled.div`
+const scale = keyframes`
+0%{
+  transform: translateY(-50%) scale(.1);
+}
+100%{
+  transform:translateY(-50%) scale(1);
+}
+`
+const Container = styled.div`
+  @media ${device.tabLand} {
+    width: 100%;
+    height: 7rem;
+    background: var(--color-secondary);
+
+    position: fixed;
+
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+
+    box-shadow: 0px 0px 2px 2px rgba(0, 0, 0, 0.1);
+  }
+`
+
+const Border = styled(Link)`
+  display: block;
   height: 3rem;
   width: 6rem;
   font-size: 1.3rem;
@@ -14,7 +42,15 @@ const Border = styled.div`
   border-radius: 55rem;
   cursor: pointer;
 
-  position: relative;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  // Media Query ...................
+  @media ${device.phone} {
+    font-size: 1.5rem;
+  }
 
   &::before {
     content: "shop Women";
@@ -23,6 +59,11 @@ const Border = styled.div`
     top: 50%;
     transform: translateY(-50%);
     pointer-events: none;
+
+    // Media Query ...................
+    @media ${device.phone} {
+      left: -10.5rem;
+    }
   }
   &::after {
     content: "shop Men";
@@ -31,6 +72,11 @@ const Border = styled.div`
     top: 50%;
     transform: translateY(-50%);
     pointer-events: none;
+
+    // Media Query ...................
+    @media ${device.phone} {
+      right: -8.5rem;
+    }
   }
 `
 const Ball = styled.div`
@@ -43,24 +89,34 @@ const Ball = styled.div`
   top: 50%;
   left: 0.8rem;
 
-  transform: translateY(-50%);
-  transition: left 0.2s linear;
+  transition: left 0.5s linear;
   opacity: 1;
-
+  animation: ${scale} 0.2s both;
   .men & {
     left: 57%;
   }
 `
 
-const SexSwitcher = ({ changeSex, sex }) => {
+const SexSwitcher = ({ changeSex, sex, location }) => {
+  const setSex = sex === "men" ? "women" : "men"
+
+  useEffect(() => {
+    const path = location.pathname.includes("/men/") ? "men" : "women"
+
+    if (sex !== path) changeSex()
+  }, [location.pathname, changeSex, sex])
+
   return (
-    <Border
-      className={sex}
-      onClick={changeSex}
-      aria-label="toggle men and women"
-    >
-      <Ball />
-    </Border>
+    <Container>
+      <Border
+        to={`/${setSex}/products`}
+        className={sex}
+        onClick={changeSex}
+        aria-label="toggle men and women"
+      >
+        <Ball />
+      </Border>
+    </Container>
   )
 }
 

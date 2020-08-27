@@ -14,10 +14,21 @@ const AddToCart = styled.h3`
     `};
   text-align: center;
   width: max-content;
+
+  &.true {
+    background: #00000096;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
 `
 
-const CustomButton = ({ children, bottomAnimation, ...props }) => (
-  <AddToCart animation={bottomAnimation} {...props}>
+const CustomButton = ({
+  children,
+  bottomAnimation,
+  disabledButton,
+  ...props
+}) => (
+  <AddToCart className={disabledButton} animation={bottomAnimation} {...props}>
     {children}
   </AddToCart>
 )

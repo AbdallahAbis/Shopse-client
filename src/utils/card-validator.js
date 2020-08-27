@@ -31,7 +31,7 @@ export const checkDate = value => {
     value.length === 3 || value.length >= 6
       ? value.replace(/^(\d\d)(\d)$/g, "$1 / $2")
       : value.replace(" / ", "")
-  console.log(value.length)
+
   const error =
     value && !value.replace(" / ", "").match(numbers)
       ? "Only numbers are allowed!"

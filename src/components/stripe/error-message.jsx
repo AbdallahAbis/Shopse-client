@@ -1,5 +1,6 @@
 import React from "react"
 import styled from "styled-components"
+import device from "../../theme/media"
 
 const Error = styled.div`
   display: flex;
@@ -39,6 +40,14 @@ const Error = styled.div`
     .glyph {
       fill: var(--color-secondary);
     }
+  }
+
+  // Media Query ...................
+
+  @media ${device.tabPort} {
+    top: 3rem;
+    height: 0;
+    margin: 0;
   }
 `
 

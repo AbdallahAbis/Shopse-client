@@ -1,11 +1,11 @@
+import { Link } from "gatsby"
 import React from "react"
 import styled from "styled-components"
-import { Link } from "gatsby"
-import SexSwitcher from "./sex-switcher"
+import device from "../theme/media"
+import CartIcon from "./icons/cart"
 import SearchIcon from "./icons/search"
 import UserIcon from "./icons/user-profile"
-import CartIcon from "./icons/cart"
-import MenuIcon from "./icons/menu"
+import SexSwitcher from "./sex-switcher"
 
 const HeaderContainer = styled.div`
   height: 10rem;
@@ -16,45 +16,83 @@ const HeaderContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  position: relative;
+`
+
+const OptionsContainer = styled.div`
+  display: flex;
+  align-items: center;
   & > * {
-    &:nth-child(2) {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
+    &:not(:last-child) {
+      margin-right: 4rem;
+
+      // Media Query ...................
+
+      @media ${device.phone} {
+        margin-right: 3rem;
+      }
     }
   }
 `
-const Logo = styled(Link)`
+const PagesLogo = styled(Link)`
   font-weight: 700;
   font-size: 3rem;
   z-index: 1000;
 `
-const OptionsContainer = styled.div`
+const HomeHeader = styled.div`
+  font-weight: 700;
+  font-size: 3rem;
+  z-index: 1000;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 10rem;
   display: flex;
   align-items: center;
+  justify-content: center;
+`
+const SearchContainer = styled.div`
+  width: 35rem;
+  height: 4rem;
 
-  & > * {
-    &:not(:last-child) {
-      margin-right: 4rem;
-    }
+  // Media Query ...................
+
+  @media ${device.tabPort} {
+    width: 40rem;
+  }
+  @media ${device.phone} {
+    width: 23rem;
+  }
+  @media ${device.smallPhone} {
+    width: 15rem;
+  }
+  @media ${device.verySmallPhone} {
+    display: none;
   }
 `
 
-const Header = ({ location }) => {
-  const Home = location && location.pathname === "/"
-  return (
-    <HeaderContainer>
-      <Logo to="/" aria-label="our logo, click for homePage">
+const Header = ({ location, searchBarStatus }) => {
+  const isHome = location && location.pathname === "/"
+  const isProducts = location && location.pathname.includes("/products")
+  return isHome ? (
+    <HomeHeader>
+      <Link to="/" aria-label="our logo, click for homePage">
         shopse.
-      </Logo>
-      <div>{Home && <SexSwitcher />}</div>
+      </Link>
+    </HomeHeader>
+  ) : (
+    <HeaderContainer>
+      <PagesLogo to="/" aria-label="our logo, click for homePage">
+        shopse.
+      </PagesLogo>
+      {isProducts && <SexSwitcher location={location} />}
       <OptionsContainer>
-        <SearchIcon />
+        <SearchContainer>
+          {isProducts && <SearchIcon location={location} />}
+        </SearchContainer>
         <UserIcon />
         <CartIcon />
-        <MenuIcon />
+        {/* <MenuIcon /> */}
       </OptionsContainer>
     </HeaderContainer>
   )

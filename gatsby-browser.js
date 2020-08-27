@@ -1,1 +1,3 @@
-export { default as wrapRootElement } from "./src/state/store"
+import wrapWithProvider from "./src/state/store"
+
+export const wrapRootElement = wrapWithProvider

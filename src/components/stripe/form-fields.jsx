@@ -128,7 +128,7 @@ const FormFields = ({
       <button type="submit" disabled={processing || !clientSecret || !stripe}>
         {processing ? "Processing…" : "Check Out"}
       </button>
-      <span className="credit">Powered by Stripe</span>
+      <span className="credit">4242 4242 4242 4242 - 08/80 - 111</span>
 
       <ErrorMessage error={error} />
     </Container>

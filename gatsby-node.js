@@ -1,40 +1,33 @@
 const { createRemoteFileNode } = require(`gatsby-source-filesystem`)
 const path = require(`path`)
 
-exports.onCreateNode = async ({
-  node,
+exports.createResolvers = async ({
   actions,
-  store,
   cache,
   createNodeId,
+  createResolvers,
+  store,
+  reporter,
 }) => {
   const { createNode } = actions
 
-  let multipleImages = node.Images
-
-  if (
-    node.internal.type === "StrapiWomen" ||
-    node.internal.type === "StrapiMen"
-  ) {
-    if (multipleImages.length > 0) {
-      const images = await Promise.all(
-        multipleImages.map(el =>
-          createRemoteFileNode({
-            url: `http://localhost:1337${el.url}`,
-            parentNodeId: node.id,
+  await createResolvers({
+    STRAPI_UploadFile: {
+      imageFile: {
+        type: "File",
+        async resolve(source) {
+          return await createRemoteFileNode({
+            url: `http://localhost:1337${source.url}`,
             store,
             cache,
             createNode,
             createNodeId,
+            reporter,
           })
-        )
-      )
-
-      multipleImages.forEach((image, i) => {
-        image.localFile___NODE = images[i].id
-      })
-    }
-  }
+        },
+      },
+    },
+  })
 }
 
 exports.createPages = async ({ graphql, actions, reporter }) => {
@@ -43,14 +36,28 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
   const result = await graphql(
     `
       {
-        Women: allStrapiWomen {
-          Products: nodes {
-            Slug
+        products: strapi {
+          men: man {
+            clothes: men_clothes {
+              slug
+            }
+            shoes: men_shoes {
+              slug
+            }
+            accessories: men_accessories {
+              slug
+            }
           }
-        }
-        Men: allStrapiMen {
-          Products: nodes {
-            Slug
+          women: woman {
+            clothes: women_clothes {
+              slug
+            }
+            shoes: women_shoes {
+              slug
+            }
+            accessories: women_accessories {
+              slug
+            }
           }
         }
       }
@@ -59,25 +66,63 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
 
   // Handle errors
   if (result.errors) {
-    reporter.panicOnBuild(`Error while running GraphQL query.`)
+    reporter.panicOnBuild(`Error while running GraphQL query in gatsby-node.`)
     return
   }
 
-  const productTemplate = path.resolve(`src/templates/product.js`)
-  result.data.Women.Products.forEach(({ Slug }) => {
-    const path = `/women/${Slug}`
+  const products = result.data.products
+  const productsTemplate = path.resolve(`src/templates/products.jsx`)
+  const productTemplate = path.resolve(`src/templates/product.jsx`)
+  const genderTemplate = path.resolve(`src/templates/gender.jsx`)
+
+  for (let [key, value] of Object.entries(products)) {
     createPage({
-      path,
-      component: productTemplate,
-      context: { slug: Slug },
+      path: `${key}`,
+      component: genderTemplate,
     })
-  })
-  result.data.Men.Products.forEach(({ Slug }) => {
-    const path = `/men/${Slug}`
+  }
+  for (let [key, value] of Object.entries(products)) {
     createPage({
-      path,
-      component: productTemplate,
-      context: { slug: Slug },
+      path: `${key}/products`,
+      component: productsTemplate,
     })
-  })
+  }
+  for (let [key, value] of Object.entries(products.men)) {
+    createPage({
+      path: `men/products/${key}`,
+      component: productsTemplate,
+    })
+    createPage({
+      path: `men/products/categories`,
+      component: productsTemplate,
+    })
+  }
+  for (let [key, value] of Object.entries(products.women)) {
+    createPage({
+      path: `women/products/${key}`,
+      component: productsTemplate,
+    })
+    createPage({
+      path: `women/products/categories`,
+      component: productsTemplate,
+    })
+  }
+  for (let [key, value] of Object.entries(products.men)) {
+    createPage({
+      path: `men/products/${key}/${value[0].slug}`,
+      component: productTemplate,
+      context: {
+        slug: value[0].slug,
+      },
+    })
+  }
+  for (let [key, value] of Object.entries(products.women)) {
+    createPage({
+      path: `women/products/${key}/${value[0].slug}`,
+      component: productTemplate,
+      context: {
+        slug: value[0].slug,
+      },
+    })
+  }
 }

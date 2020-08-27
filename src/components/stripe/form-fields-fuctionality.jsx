@@ -7,6 +7,7 @@ import React, { useState } from "react"
 import FormFields from "./form-fields"
 import SuccessMessage from "./success-message"
 import validateInfo from "./validation"
+import { useEffect } from "react"
 
 const FormFunc = ({ clientSecret, error, setError }) => {
   const [succeeded, setSucceeded] = useState(false)
@@ -20,7 +21,12 @@ const FormFunc = ({ clientSecret, error, setError }) => {
   })
   const stripe = useStripe()
   const elements = useElements()
-  console.log(typeof stripe, stripe)
+
+  useEffect(() => {
+    if (!processing || clientSecret || stripe) return setError("")
+    setError("Please wait for the Stripe API to load.")
+  }, [processing, clientSecret, stripe, setError])
+
   const handleFocus = e => {
     const element = e.target
     const classList = element.classList

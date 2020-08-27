@@ -1,6 +1,7 @@
 import React from "react"
 import styled, { css } from "styled-components"
 import SmallTitle from "./small-title"
+import device from "../theme/media"
 
 const ColorsContainer = styled.div`
   display: grid;
@@ -17,6 +18,11 @@ const ColorsContainer = styled.div`
 
   p {
     justify-self: start;
+  }
+  // Media Query ...................
+
+  @media ${device.tabPort} {
+    margin-bottom: 4rem;
   }
 `
 
@@ -44,15 +50,24 @@ const Color = ({ colors, bottomAnimation, rightAnimation }) => {
   return (
     <ColorsContainer animation={bottomAnimation}>
       <SmallTitle>Select Color</SmallTitle>
-      {colors.map((singleColor, i) => (
+      {Array.isArray(colors) ? (
+        colors.map((singleColor, i) => (
+          <ColorCircle
+            delay={(10 / 100) * i + 0.7}
+            color={singleColor}
+            className="selected"
+            animation={rightAnimation}
+            key={i}
+          />
+        ))
+      ) : (
         <ColorCircle
-          delay={(10 / 100) * i + 0.7}
-          color={singleColor}
+          delay={(10 / 100) * 1}
+          color={colors}
           className="selected"
           animation={rightAnimation}
-          key={i}
         />
-      ))}
+      )}
     </ColorsContainer>
   )
 }
