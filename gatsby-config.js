@@ -23,7 +23,7 @@ module.exports = {
       options: {
         typeName: "STRAPI",
         fieldName: "strapi",
-        url: "http://localhost:1337/graphql",
+        url: "https://shopse-cms.herokuapp.com/graphql",
       },
     },
     {
