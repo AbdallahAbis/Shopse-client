@@ -17,7 +17,7 @@ exports.createResolvers = async ({
         type: "File",
         async resolve(source) {
           return await createRemoteFileNode({
-            url: `http://localhost:1337${source.url}`,
+            url: `https://shopse-cms.herokuapp.com${source.url}`,
             store,
             cache,
             createNode,
@@ -107,22 +107,27 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
       component: productsTemplate,
     })
   }
-  for (let [key, value] of Object.entries(products.men)) {
-    createPage({
-      path: `men/products/${key}/${value[0].slug}`,
-      component: productTemplate,
-      context: {
-        slug: value[0].slug,
-      },
+
+  for (let [key, values] of Object.entries(products.men)) {
+    values.forEach(value => {
+      createPage({
+        path: `men/products/${key}/${value.slug}`,
+        component: productTemplate,
+        context: {
+          slug: value.slug,
+        },
+      })
     })
   }
-  for (let [key, value] of Object.entries(products.women)) {
-    createPage({
-      path: `women/products/${key}/${value[0].slug}`,
-      component: productTemplate,
-      context: {
-        slug: value[0].slug,
-      },
+  for (let [key, values] of Object.entries(products.women)) {
+    values.forEach(value => {
+      createPage({
+        path: `women/products/${key}/${value.slug}`,
+        component: productTemplate,
+        context: {
+          slug: value.slug,
+        },
+      })
     })
   }
 }
