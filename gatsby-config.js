@@ -1,4 +1,5 @@
 const config = require("./src/config")
+process.env.GATSBY_CONCURRENT_DOWNLOAD = 1
 
 module.exports = {
   siteMetadata: {
