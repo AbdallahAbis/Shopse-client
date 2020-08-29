@@ -17,7 +17,7 @@ exports.createResolvers = async ({
         type: "File",
         async resolve(source) {
           return await createRemoteFileNode({
-            url: `https://shopse-cms.herokuapp.com${source.url}`,
+            url: `${source.url}`,
             store,
             cache,
             createNode,
