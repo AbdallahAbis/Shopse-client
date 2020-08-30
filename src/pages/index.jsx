@@ -90,10 +90,20 @@ const Container = styled.div`
         span {
           font-size: 2.5rem;
           transition: all 0.5s;
+
+          // Media Query
+          @media ${device.tabPort} {
+            font-size: 2rem;
+          }
         }
         a {
           transition: all 0.5s;
           font-size: 10rem;
+
+          // Media Query
+          @media ${device.tabPort} {
+            font-size: 8rem;
+          }
         }
       }
     }
