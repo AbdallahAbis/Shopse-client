@@ -1,7 +1,7 @@
 const createPaymentIntent = options => {
   if (typeof window !== `undefined`) {
     return window
-      .fetch(`/.netlify/functions/create-payment-intent`, {
+      .fetch(`${process.env.GATSBY_BACKEND_URL}/api/create-payment-intent`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -17,7 +17,6 @@ const createPaymentIntent = options => {
       })
       .then(data => {
         if (!data || data.error) {
-          console.log("API error:", { data })
           throw new Error("PaymentIntent API Error")
         } else {
           return data.client_secret
@@ -26,37 +25,10 @@ const createPaymentIntent = options => {
   }
 }
 
-const getProductDetails = () => {
-  if (typeof window !== `undefined`) {
-    return window
-      .fetch(`api/product-details`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-      .then(res => {
-        if (res.status === 200) {
-          return res.json()
-        } else {
-          return null
-        }
-      })
-      .then(data => {
-        if (!data || data.error) {
-          console.log("API error:", { data })
-          throw Error("API Error")
-        } else {
-          return data
-        }
-      })
-  }
-}
-
 const getPublicStripeKey = () => {
   if (typeof window !== `undefined`) {
     return window
-      .fetch(`api/public-key`, {
+      .fetch(`${process.env.GATSBY_BACKEND_URL}/api/public-key`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -71,7 +43,6 @@ const getPublicStripeKey = () => {
       })
       .then(data => {
         if (!data || data.error) {
-          console.log("API error:", { data })
           throw Error("API Error")
         } else {
           return data.publishableKey
@@ -83,7 +54,6 @@ const getPublicStripeKey = () => {
 const api = {
   createPaymentIntent,
   getPublicStripeKey: getPublicStripeKey,
-  getProductDetails: getProductDetails,
 }
 
 export default api

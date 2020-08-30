@@ -1,4 +1,7 @@
 const config = require("./src/config")
+require("dotenv").config({
+  path: `.env.${process.env.NODE_ENV}`,
+})
 process.env.GATSBY_CONCURRENT_DOWNLOAD = 1
 
 module.exports = {
@@ -24,7 +27,7 @@ module.exports = {
       options: {
         typeName: "STRAPI",
         fieldName: "strapi",
-        url: "https://shopse-cms.herokuapp.com/graphql",
+        url: process.env.GATSBY_CMS_URL,
       },
     },
     {
