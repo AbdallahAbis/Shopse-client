@@ -13,7 +13,10 @@ import { selectCartItems, selectCartTotal } from "../state/cart/cart.selectors"
 import device from "../theme/media"
 
 // Stripe API
-const stripePromise = api.getPublicStripeKey().then(key => loadStripe(key))
+let stripePromise
+if (typeof window !== `undefined`) {
+  stripePromise = api.getPublicStripeKey().then(key => loadStripe(key))
+}
 
 const Container = styled.div`
   display: grid;

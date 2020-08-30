@@ -11,6 +11,7 @@ const StripeForm = ({ cartTotalAmount }) => {
   const [clientSecret, setClientSecret] = useState(null)
 
   useEffect(() => {
+    if (typeof window === `undefined`) return
     api
       .createPaymentIntent({
         amount: Math.round(cartTotalAmount * 100),
