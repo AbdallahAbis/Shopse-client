@@ -2,6 +2,7 @@ import Img from "gatsby-image"
 import React, { useState } from "react"
 import styled from "styled-components"
 import { slideImages } from "../utils/keyframes"
+import device from "../theme/media"
 
 const SliderContainer = styled.div`
   height: 100%;
@@ -33,7 +34,7 @@ const ImageContainer = styled.div`
   top: 50%;
   left: 50%;
   .gatsby-image-wrapper {
-    animation: ${slideImages} 2s both;
+    animation: ${slideImages} 0.5s both;
     border: 1px solid var(--color-secondary);
     width: 100%;
     height: 100%;
@@ -41,9 +42,17 @@ const ImageContainer = styled.div`
   &:nth-child(odd) {
     transform: ${({ rotate }) =>
       `translate(-50%, -50%) rotate(${1 + rotate * 2}deg)`};
+
+    @media ${device.tabPort} {
+      transform: translate(-50%, -50%);
+    }
   }
   &:nth-child(even) {
     transform: translate(-50%, -50%) rotate(-10deg);
+
+    @media ${device.tabPort} {
+      transform: translate(-50%, -50%);
+    }
   }
 `
 

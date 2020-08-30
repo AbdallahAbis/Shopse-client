@@ -47,6 +47,7 @@ const FormFunc = ({ clientSecret, error, setError }) => {
     if (!error) {
       setData({ ...data, [elementName]: elementValue })
     }
+
     setError(error)
   }
   const handleSubmit = async e => {
@@ -73,12 +74,10 @@ const FormFunc = ({ clientSecret, error, setError }) => {
     if (payload.error) {
       setError(payload.error.message)
       setProcessing(false)
-      console.log("[error]", payload.error)
     } else {
       setError(null)
       setSucceeded(true)
       setProcessing(false)
-      console.log("[PaymentIntent]", payload.paymentIntent)
     }
   }
   return succeeded ? (

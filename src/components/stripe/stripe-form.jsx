@@ -20,8 +20,8 @@ const StripeForm = ({ cartTotalAmount }) => {
       .then(clientSecret => {
         setClientSecret(clientSecret)
       })
-      .catch(err => {
-        setError(err.message)
+      .catch(() => {
+        setError("Please wait for the Stripe API to load.")
       })
   }, [cartTotalAmount])
 

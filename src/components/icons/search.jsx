@@ -149,7 +149,6 @@ const SearchIcon = ({
     if (!isGender) return
     const searchIcon = iconRef.current
     if (e.keyCode === 13) {
-      console.log("value", searchIcon)
       searchIcon.firstChild.click()
     }
   }

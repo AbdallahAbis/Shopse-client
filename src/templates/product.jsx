@@ -15,9 +15,12 @@ import {
   changeItemSize,
   selectItemColor,
   selectItemSize,
+  selectSearchValue,
 } from "../state/utils/utils.reducer"
 import { halfRotate, slideBottom, slideRight } from "../utils/keyframes"
 import device from "../theme/media"
+import ItemsHeader from "../components/items-header"
+import ItemsGrid from "../components/items-grid"
 
 const Container = styled.div`
   min-height: calc(100vh - var(--header));
@@ -150,6 +153,7 @@ const ProductPage = ({
   itemSize,
   changeItemSize,
   itemColor,
+  searchValue,
 }) => {
   const men = data.products.men
   const women = data.products.women
@@ -179,42 +183,50 @@ const ProductPage = ({
     addCurrentItem(item)
     changeItemSize("")
   }
+
   return (
     <Layout location={location}>
-      <Container>
-        <ImagesContainer>
-          <Slider images={images}></Slider>
-        </ImagesContainer>
-        <TextContainer>
-          <div>
-            <ProductTitle>{title}</ProductTitle>
-            <ProductPrice>${price}</ProductPrice>
-            <Color
-              colors={colors}
-              bottomAnimation={slideBottom}
-              rightAnimation={slideRight}
-            />
-            <Size
-              sizes={sizes}
-              selectedSize={currentSize}
-              bottomAnimation={slideBottom}
-              rightAnimation={slideRight}
-            ></Size>
-            <ActionsContainer>
-              <CustomButton
-                onClick={handleAddItem}
+      {!searchValue ? (
+        <Container>
+          <ImagesContainer>
+            <Slider images={images}></Slider>
+          </ImagesContainer>
+          <TextContainer>
+            <div>
+              <ProductTitle>{title}</ProductTitle>
+              <ProductPrice>${price}</ProductPrice>
+              <Color
+                colors={colors}
                 bottomAnimation={slideBottom}
-                disabledButton={
-                  !currentSize && !(sizes[0] === "One Size") && !itemSize
-                }
-              >
-                Add To Cart
-              </CustomButton>
-              <Like bottomAnimation={slideBottom} />
-            </ActionsContainer>
-          </div>
-        </TextContainer>
-      </Container>
+                rightAnimation={slideRight}
+              />
+              <Size
+                sizes={sizes}
+                selectedSize={currentSize}
+                bottomAnimation={slideBottom}
+                rightAnimation={slideRight}
+              ></Size>
+              <ActionsContainer>
+                <CustomButton
+                  onClick={handleAddItem}
+                  bottomAnimation={slideBottom}
+                  disabledButton={
+                    !currentSize && !(sizes[0] === "One Size") && !itemSize
+                  }
+                >
+                  Add To Cart
+                </CustomButton>
+                <Like bottomAnimation={slideBottom} />
+              </ActionsContainer>
+            </div>
+          </TextContainer>
+        </Container>
+      ) : (
+        <>
+          <ItemsHeader location={location} />
+          <ItemsGrid location={location} />
+        </>
+      )}
     </Layout>
   )
 }
@@ -401,6 +413,7 @@ const mapStateToProps = createStructuredSelector({
   cartItems: selectCartItems,
   itemSize: selectItemSize,
   itemColor: selectItemColor,
+  searchValue: selectSearchValue,
 })
 const mapDispatchToProps = dispatch => ({
   addCurrentItem: item => dispatch(addItem(item)),
