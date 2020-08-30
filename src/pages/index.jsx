@@ -65,6 +65,11 @@ const Container = styled.div`
           transform: rotate(5deg) translateX(0);
           transition-delay: 0.3s;
         }
+
+        // Media Query
+        @media ${device.tabPort} {
+          display: none;
+        }
       }
       .women-image {
         transition: all 0.4s ease-in;
@@ -73,6 +78,11 @@ const Container = styled.div`
         &:last-child {
           transform: rotate(-5deg) translateX(0);
           transition-delay: 0.3s;
+        }
+
+        // Media Query
+        @media ${device.tabPort} {
+          display: none;
         }
       }
 

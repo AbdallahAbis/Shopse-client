@@ -1,6 +1,6 @@
 import { Link } from "gatsby"
 import Img from "gatsby-image"
-import React from "react"
+import React, { useEffect } from "react"
 import { connect } from "react-redux"
 import { createStructuredSelector } from "reselect"
 import styled from "styled-components"
@@ -109,7 +109,7 @@ const ItemsGrid = ({
     ? allProducts.men
     : allProducts.women
 
-  const products = SortAndSearch(currentSex, sortMethod, searchValue, category)
+  let products = SortAndSearch(currentSex, sortMethod, searchValue, category)
 
   const generatePath = (category, product) => {
     if (category && category !== "categories" && sex && product)
