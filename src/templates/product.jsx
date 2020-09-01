@@ -5,7 +5,9 @@ import { createStructuredSelector } from "reselect"
 import styled from "styled-components"
 import Color from "../components/color"
 import CustomButton from "../components/custom-button"
-import Like from "../components/icons/like"
+import Like from "../components/icon-components/like"
+import ItemsGrid from "../components/items-grid"
+import ItemsHeader from "../components/items-header"
 import Layout from "../components/layout"
 import Size from "../components/size"
 import Slider from "../components/slider"
@@ -17,10 +19,8 @@ import {
   selectItemSize,
   selectSearchValue,
 } from "../state/utils/utils.reducer"
-import { halfRotate, slideBottom, slideRight } from "../utils/keyframes"
 import device from "../theme/media"
-import ItemsHeader from "../components/items-header"
-import ItemsGrid from "../components/items-grid"
+import { halfRotate, slideBottom, slideRight } from "../utils/keyframes"
 
 const Container = styled.div`
   min-height: calc(100vh - var(--header));
@@ -155,8 +155,11 @@ const ProductPage = ({
   itemColor,
   searchValue,
 }) => {
+  // getting men and women products from the data that was returned from the query
   const men = data.products.men
   const women = data.products.women
+
+  // getting product properties for the current product
   const { id, title, thumbnail, images, price, other } =
     men.clothes[0] ||
     men.shoes[0] ||
@@ -165,12 +168,17 @@ const ProductPage = ({
     women.shoes[0] ||
     women.accessories[0]
 
+  // resetting the size selected.
   useEffect(() => {
     changeItemSize("")
   }, [location.pathname, changeItemSize])
 
+  // setting sizes
   const sizes = !other.sizes ? ["One Size"] : other.sizes
+  // setting colors
   const colors = Object.keys(other).length === 0 ? ["One Color"] : other.colors
+
+  // setting the current selected size.
   const currentSize =
     cartItems.find(item => item.id === id) &&
     cartItems.find(
@@ -178,7 +186,10 @@ const ProductPage = ({
     ) &&
     cartItems.find(item => item.id === id).itemSize
 
+  // defining the item to add it to the card.
   const item = { id, title, thumbnail, price, colors, itemSize }
+
+  // handles adding item to the card and resets the size that was selected
   const handleAddItem = () => {
     addCurrentItem(item)
     changeItemSize("")
@@ -231,6 +242,7 @@ const ProductPage = ({
   )
 }
 
+// querying for the current product product by filtering using the slug.
 export const query = graphql`
   query($slug: String!) {
     products: strapi {
@@ -409,12 +421,14 @@ export const query = graphql`
     }
   }
 `
+
 const mapStateToProps = createStructuredSelector({
   cartItems: selectCartItems,
   itemSize: selectItemSize,
   itemColor: selectItemColor,
   searchValue: selectSearchValue,
 })
+
 const mapDispatchToProps = dispatch => ({
   addCurrentItem: item => dispatch(addItem(item)),
   changeItemSize: value => dispatch(changeItemSize(value)),

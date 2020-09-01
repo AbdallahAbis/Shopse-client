@@ -2,10 +2,9 @@ import { Link } from "gatsby"
 import React from "react"
 import styled from "styled-components"
 import device from "../theme/media"
-import CartIcon from "./icons/cart"
-import SearchIcon from "./icons/search"
-import UserIcon from "./icons/user-profile"
-import SexSwitcher from "./sex-switcher"
+import CartIcon from "./icon-components/cart"
+import SearchIcon from "./icon-components/search"
+import GenderSwitcher from "./gender-switcher"
 
 const HeaderContainer = styled.div`
   height: 10rem;
@@ -71,10 +70,15 @@ const SearchContainer = styled.div`
   }
 `
 
-const Header = ({ location, searchBarStatus }) => {
+const Header = ({ location }) => {
+  // check if the user is in the HOME page
   const isHome = location && location.pathname === "/"
+  // check if the user is in the PRODUCTS page
   const isProducts = location && location.pathname.includes("/products")
+
+
   return isHome ? (
+    // show only the log when in home page
     <HomeHeader>
       <Link to="/" aria-label="our logo, click for homePage">
         shopse.
@@ -85,12 +89,12 @@ const Header = ({ location, searchBarStatus }) => {
       <PagesLogo to="/" aria-label="our logo, click for homePage">
         shopse.
       </PagesLogo>
-      {isProducts && <SexSwitcher location={location} />}
+      {isProducts && <GenderSwitcher location={location} />}
       <OptionsContainer>
         <SearchContainer>
           {isProducts && <SearchIcon location={location} />}
         </SearchContainer>
-        <UserIcon />
+        {/* <UserIcon /> */}
         <CartIcon />
         {/* <MenuIcon /> */}
       </OptionsContainer>

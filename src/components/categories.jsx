@@ -8,14 +8,20 @@ import { useState } from "react"
 import { useEffect } from "react"
 
 const Categories = ({ gender, category, changeCategory, location }) => {
+  // set the selected Category
   const [selected, setSelected] = useState(category)
+
   const values = ["Categories", "Clothes", "Shoes", "Accessories"]
 
   useEffect(() => {
     const selectedCategory = location.pathname.split("/")
+    // get the potential category
     const potentialCategory = selectedCategory[selectedCategory.length - 1]
+
+    // if the potential category === the selected category, then all set.
     if (potentialCategory === category) return
 
+    // if not then get the category and set it
     const selected =
       potentialCategory !== "categories" &&
       potentialCategory !== "clothes" &&

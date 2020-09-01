@@ -1,3 +1,4 @@
+// colors for the website.
 module.exports = {
   colors: {
     primary: "#EFF3F6",

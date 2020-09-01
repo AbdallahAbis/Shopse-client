@@ -1,16 +1,15 @@
-import React, { useRef, useEffect } from "react"
+import { Link } from "gatsby"
+import React, { useEffect, useRef, useState } from "react"
 import { connect } from "react-redux"
 import { createStructuredSelector } from "reselect"
 import styled, { css } from "styled-components"
 import {
   changeSearch,
+  resetSearchValue,
   selectSearchBarStatus,
   selectSearchValue,
   toggleSearchInput,
-  resetSearchValue,
 } from "../../state/utils/utils.reducer"
-import { Link } from "gatsby"
-import { useState } from "react"
 import device from "../../theme/media"
 
 const Icon = css`
@@ -37,6 +36,7 @@ const Container = styled.div`
     width: 0;
     visibility: hidden;
 
+    background: transparent;
     color: var(--color-text);
     font-family: var(--font-primary);
     font-size: 1.3rem;
@@ -94,21 +94,26 @@ const SearchIcon = ({
   const [visible, setVisible] = useState(false)
   const inputRef = useRef()
   const iconRef = useRef()
+  // defining the gender based on the location
   const gender = location.pathname.endsWith("/men") ? "men" : "women"
 
   useEffect(() => {
     const path = location.pathname
+    // checks if the user is in the Gender page
     const gender = path.endsWith("/men") || path.endsWith("/women")
+    // checks for either the value of searchInputStatus or if the user in in the gender page to show the search bar
     const shown = searchInputStatus === "shown" || isGender ? true : false
+
+    // updating the state
     setIsGender(gender)
     setVisible(shown)
-  }, [location.pathname, isGender, searchInputStatus])
 
-  useEffect(() => {
+    // updating the status of the Search Input
     if (isGender && searchInputStatus === "shown") toggleSearchInput()
-  }, [toggleSearchInput, isGender, searchInputStatus])
+  }, [location.pathname, isGender, searchInputStatus, toggleSearchInput])
 
   useEffect(() => {
+    // if the user is in Gender page or the search value isn't 0, then break from the useEffect func.
     if (isGender || searchValue.length !== 0) return
 
     function handleClickOutside(e) {
@@ -116,16 +121,20 @@ const SearchIcon = ({
       const searchInput = inputRef.current
       const searchIcon = iconRef.current
 
-      if ((!searchInput && !searchIcon) || searchInput.contains(element)) return
+      // if the there's no searchInput OR searchIcon OR the SearchInput contains the click then don't do anything.
+      if (!searchInput || !searchIcon || searchInput.contains(element)) return
+
+      // if none of the above then close/open the search input and reset the value
       if (!searchInput.contains(element) && !searchIcon.contains(element)) {
         resetSearchValue()
         toggleSearchInput()
       }
     }
 
-    if (visible && !isGender)
-      document.addEventListener("mousedown", handleClickOutside)
+    // enable the event listener if the search bar is visible already.
+    if (visible) document.addEventListener("mousedown", handleClickOutside)
 
+    // kill the event listener.
     return () => {
       document.removeEventListener("mousedown", handleClickOutside)
     }

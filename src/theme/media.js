@@ -8,6 +8,7 @@ const size = {
   desktop: "112.5em", //1800
 }
 
+// defining the Media Queries so that I don't have to write it every time.
 const device = {
   verySmallPhone: `only screen and (max-width: ${size.verySmallPhone})`,
   smallPhone: `only screen and (max-width: ${size.smallPhone})`,

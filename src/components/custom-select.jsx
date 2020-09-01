@@ -24,14 +24,12 @@ const SelectWrapper = styled.div`
   width: 20rem;
   margin-top: 1.5rem;
   position: relative;
-@media not all and (pointer: coarse) {
- &:hover {
-    i{
+  @media not all and (pointer: coarse) {
+    &:hover {
+      i {
         transform: translateY(-100%) rotate(135deg);
       }
     }
-}
-  
   }
 
   // Media Query ...................
@@ -119,6 +117,7 @@ const ArrowDown = styled.i`
   transform: translateY(-100%) rotate(45deg);
 `
 
+// if the select needs to change the path location then use this
 const SelectChoice = ({ routing, value, gender, ...props }) => {
   return routing ? (
     <Link
@@ -150,35 +149,45 @@ const CustomInput = ({
   const ref = useRef()
 
   useEffect(() => {
+    // hides the select when clicking outside
     function handleClickOutside(e) {
       const element = e.target
       const selectDropdownArea = ref.current
 
+      // if there is selectDropdownArea and selectDropdownArea doesn't contain the click then hide the select.
       if (selectDropdownArea && !selectDropdownArea.contains(element)) {
         return setVisibility(false)
       }
     }
 
+    // if the select is already shown then add the event listener.
     if (visibility) document.addEventListener("mousedown", handleClickOutside)
 
+    // Kill the event listener
     return () => {
       document.removeEventListener("mousedown", handleClickOutside)
     }
   }, [visibility, ref])
 
+  // handle the change of the select.
   const handleChange = e => {
     const element = e.target
     const value = element.getAttribute("value")
 
+    // set the selected Item
     setItemToShow(value)
+
+    // change the value of the selected option to be in snake_case
     handleValueChange(value.toLowerCase().replace(/ /g, "_"))
   }
 
   useEffect(() => {
+    // set the selected item when the page loads and change the value from snake_Case to normal.
     setItemToShow(selected.replace(/_/g, " "))
     handleValueChange(selected)
   }, [selected, handleValueChange])
 
+  // generates the className for the selected Item
   const generateClassName = value => {
     if (visibility) return String(itemToShow === value.toLowerCase())
   }
