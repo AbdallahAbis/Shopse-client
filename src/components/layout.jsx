@@ -2,17 +2,16 @@ import { graphql, useStaticQuery } from "gatsby"
 import React from "react"
 import { connect } from "react-redux"
 import { createStructuredSelector } from "reselect"
-import sal from "sal.js"
-import "sal.js/dist/sal.css"
 import { createGlobalStyle } from "styled-components"
 import config from "../config"
 import * as fontFiles from "../fonts/fonts"
 import { fetchProducts } from "../state/shop/shop.actions"
 import { selectLoading } from "../state/shop/shop.selectors"
+import device from "../theme/media"
 import Header from "./header"
 import Loader from "./loader"
-import device from "../theme/media"
 
+// global styles for the site
 const GlobalStyles = createGlobalStyle`
 @font-face {
     font-family: "Europa";
@@ -112,6 +111,7 @@ select{
 `
 
 const Layout = ({ children, location, loading, products, fetchProducts }) => {
+  // Querying data from Strapi
   const data = useStaticQuery(graphql`
     {
       products: strapi {
@@ -296,10 +296,9 @@ const Layout = ({ children, location, loading, products, fetchProducts }) => {
       }
     }
   `)
+
   React.useEffect(() => {
-    sal({ threshold: 0, rootMargin: "80%" })
-  })
-  React.useEffect(() => {
+    // update the state with the queried products.
     fetchProducts(data.products)
   }, [data, fetchProducts])
   return loading ? (

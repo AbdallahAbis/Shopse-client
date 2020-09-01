@@ -11,6 +11,7 @@ exports.createResolvers = async ({
 }) => {
   const { createNode } = actions
 
+  // Creating File type for images that are queried from Strapi, to use childImageSharp on them.
   await createResolvers({
     STRAPI_UploadFile: {
       imageFile: {
@@ -30,9 +31,11 @@ exports.createResolvers = async ({
   })
 }
 
+// Creating Pages for all different Items on the page
 exports.createPages = async ({ graphql, actions, reporter }) => {
   const { createPage } = actions
 
+  // Querying for strapi products.
   const result = await graphql(
     `
       {
@@ -70,10 +73,13 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
     return
   }
 
+  // defining the templates (pages).
   const products = result.data.products
   const productsTemplate = path.resolve(`src/templates/products.jsx`)
   const productTemplate = path.resolve(`src/templates/product.jsx`)
   const genderTemplate = path.resolve(`src/templates/gender.jsx`)
+
+  // Creating a page for each gender
 
   for (let [key, value] of Object.entries(products)) {
     createPage({
@@ -81,12 +87,18 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
       component: genderTemplate,
     })
   }
+
+  // Creating pages for each gender's products
+
   for (let [key, value] of Object.entries(products)) {
     createPage({
       path: `${key}/products`,
       component: productsTemplate,
     })
   }
+
+  // Creating pages for men's Categories
+
   for (let [key, value] of Object.entries(products.men)) {
     createPage({
       path: `men/products/${key}`,
@@ -97,6 +109,9 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
       component: productsTemplate,
     })
   }
+
+  // Creating pages for women's Categories
+
   for (let [key, value] of Object.entries(products.women)) {
     createPage({
       path: `women/products/${key}`,
@@ -107,6 +122,8 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
       component: productsTemplate,
     })
   }
+
+  // Creating pages for men's products
 
   for (let [key, values] of Object.entries(products.men)) {
     values.forEach(value => {
@@ -119,6 +136,9 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
       })
     })
   }
+
+  // Creating pages for women's products
+
   for (let [key, values] of Object.entries(products.women)) {
     values.forEach(value => {
       createPage({

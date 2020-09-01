@@ -50,24 +50,28 @@ const Color = ({ colors, bottomAnimation, rightAnimation }) => {
   return (
     <ColorsContainer animation={bottomAnimation}>
       <SmallTitle>Select Color</SmallTitle>
-      {Array.isArray(colors) ? (
-        colors.map((singleColor, i) => (
+      {
+        // check if colors is an Array and loop through it
+        Array.isArray(colors) ? (
+          colors.map((singleColor, i) => (
+            <ColorCircle
+              delay={(10 / 100) * i + 0.7}
+              color={singleColor}
+              className="selected"
+              animation={rightAnimation}
+              key={i}
+            />
+          ))
+        ) : (
+          // if it's not an array then
           <ColorCircle
-            delay={(10 / 100) * i + 0.7}
-            color={singleColor}
+            delay={(10 / 100) * 1}
+            color={colors}
             className="selected"
             animation={rightAnimation}
-            key={i}
           />
-        ))
-      ) : (
-        <ColorCircle
-          delay={(10 / 100) * 1}
-          color={colors}
-          className="selected"
-          animation={rightAnimation}
-        />
-      )}
+        )
+      }
     </ColorsContainer>
   )
 }

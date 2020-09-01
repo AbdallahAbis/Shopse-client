@@ -1,6 +1,6 @@
 import { Link } from "gatsby"
 import Img from "gatsby-image"
-import React, { useEffect } from "react"
+import React from "react"
 import { connect } from "react-redux"
 import { createStructuredSelector } from "reselect"
 import styled from "styled-components"
@@ -10,10 +10,10 @@ import {
   selectSearchValue,
   selectSortMethod,
 } from "../state/utils/utils.reducer"
+import device from "../theme/media"
 import { slideDown } from "../utils/keyframes"
 import { SortAndSearch } from "../utils/sortAndSearch"
 import EmptyMessage from "./empty-message"
-import device from "../theme/media"
 
 const Container = styled.div`
   margin: 0 5rem 20rem 5rem;
@@ -99,24 +99,28 @@ const Price = styled(Link)`
 
 const ItemsGrid = ({
   allProducts,
-  sex,
+  gender,
   sortMethod,
   searchValue,
   category,
   location,
 }) => {
+  // get the current gender from the URL and set Current Gender
   let currentSex = location.pathname.includes("/men/")
     ? allProducts.men
     : allProducts.women
 
+  // check if there's any search / sort / category changes required
   let products = SortAndSearch(currentSex, sortMethod, searchValue, category)
 
   const generatePath = (category, product) => {
-    if (category && category !== "categories" && sex && product)
-      return `/${sex}/products/${category}/${product.slug}`
-    if (!sex || !product) return `/${sex}/products/`
+    // generates the path to a single Page if the category was set
+    if (category && category !== "categories" && gender && product)
+      return `/${gender}/products/${category}/${product.slug}`
 
     const typeName = product.__typename
+
+    // generates Category for the selected product if it wasn't selected.
     const setCategory = typeName.includes("Clothes")
       ? "clothes"
       : typeName.includes("Shoes")
@@ -124,10 +128,11 @@ const ItemsGrid = ({
       : typeName.includes("Accessories")
       ? "accessories"
       : category
-    return `/${sex}/products/${setCategory}/${product.slug}`
+    return `/${gender}/products/${setCategory}/${product.slug}`
   }
 
   return !products || products.length === 0 ? (
+    // show the message when there's no products.
     <EmptyMessage>
       Sorry for letting you down, We don't have such an Item.
     </EmptyMessage>
@@ -167,7 +172,7 @@ const ItemsGrid = ({
 }
 
 const mapStateToProps = createStructuredSelector({
-  sex: selectSex,
+  gender: selectSex,
   allProducts: selectProducts,
   sortMethod: selectSortMethod,
   searchValue: selectSearchValue,

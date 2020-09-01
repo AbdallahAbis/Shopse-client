@@ -3,7 +3,7 @@ import React from "react"
 import { connect } from "react-redux"
 import styled from "styled-components"
 import { removeItem } from "../state/cart/cart.actions"
-import Remove from "./icons/remove"
+import Remove from "./icon-components/remove"
 
 const Container = styled.div`
   max-width: 100%;

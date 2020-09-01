@@ -199,10 +199,12 @@ const SVG = () => (
 )
 
 const CartIcon = ({ cartItems, isHidden, toggleCartHidden, totalPrice }) => {
+  // defining references
   const dropdownRef = useRef(null)
   const backgroundRef = useRef(null)
   const iconRef = useRef(null)
   const bodyRef = useRef(null)
+
   useEffect(() => {
     function handleClickOutside(e) {
       const element = e.target
@@ -210,15 +212,20 @@ const CartIcon = ({ cartItems, isHidden, toggleCartHidden, totalPrice }) => {
       const background = backgroundRef.current
       const icon = iconRef.current
 
+      // checking if all the necessary refs to exist
       if (dropdown && background && icon) {
+        // if the background OR the icon contains the click then don't do anything.
         if (background.contains(element) || icon.contains(element)) return
+        // if they don't and also the dropdown doesn't then hide the cart dropdown
         if (!dropdown.contains(element)) return toggleCartHidden()
       }
     }
 
+    // enable the event listener if the dropdown is already shown.
     if (isHidden === "shown")
       document.addEventListener("mousedown", handleClickOutside)
 
+    // kill the event listener.
     return () => {
       document.removeEventListener("mousedown", handleClickOutside)
     }

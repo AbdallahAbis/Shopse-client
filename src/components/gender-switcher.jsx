@@ -97,20 +97,22 @@ const Ball = styled.div`
   }
 `
 
-const SexSwitcher = ({ changeSex, sex, location }) => {
-  const setSex = sex === "men" ? "women" : "men"
+const GenderSwitcher = ({ changeSex, gender, location }) => {
+  // get the opposite of the selected gender
+  const theOppositeOfGender = gender === "men" ? "women" : "men"
 
   useEffect(() => {
-    const path = location.pathname.includes("/men/") ? "men" : "women"
+    // get the selected gender
+    const currentGender = location.pathname.includes("/men/") ? "men" : "women"
 
-    if (sex !== path) changeSex()
-  }, [location.pathname, changeSex, sex])
+    if (gender !== currentGender) changeSex()
+  }, [location.pathname, changeSex, gender])
 
   return (
     <Container>
       <Border
-        to={`/${setSex}/products`}
-        className={sex}
+        to={`/${theOppositeOfGender}/products`}
+        className={gender}
         onClick={changeSex}
         aria-label="toggle men and women"
       >
@@ -121,10 +123,10 @@ const SexSwitcher = ({ changeSex, sex, location }) => {
 }
 
 const mapStateToProps = createStructuredSelector({
-  sex: selectSex,
+  gender: selectSex,
 })
 const mapDispatchToProps = dispatch => ({
   changeSex: () => dispatch(changeSex()),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(SexSwitcher)
+export default connect(mapStateToProps, mapDispatchToProps)(GenderSwitcher)

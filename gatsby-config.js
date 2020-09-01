@@ -1,7 +1,12 @@
+// importing config in the src to use it
 const config = require("./src/config")
+
+// defining the path to Environment variables
 require("dotenv").config({
   path: `.env.${process.env.NODE_ENV}`,
 })
+
+// setting the concurrent download value to allow the queries to run even after 30s which is the default
 process.env.GATSBY_CONCURRENT_DOWNLOAD = 1
 
 module.exports = {
@@ -10,11 +15,14 @@ module.exports = {
     siteUrl: `https://shopse.netlify.app`,
     description: `An eCommerce website designed by M.N and developed by A.A`,
   },
+
+  // sitting the proxy for development env to let gatsby connect with the Backend (Shopse-Server)
   proxy: {
     prefix: "/api",
     url: "http://localhost:1999",
   },
   plugins: [
+    // Let's you access files
     {
       resolve: `gatsby-source-filesystem`,
       options: {
@@ -22,6 +30,7 @@ module.exports = {
         path: `${__dirname}/src/images/`,
       },
     },
+    // Connects with Strapi
     {
       resolve: `gatsby-source-graphql`,
       options: {
@@ -30,6 +39,7 @@ module.exports = {
         url: process.env.GATSBY_CMS_URL,
       },
     },
+    //  allows to add the site to their home screen on most mobile browsers
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
@@ -42,6 +52,7 @@ module.exports = {
         icon: "src/images/icon.png",
       },
     },
+    // Let's webpack to access svg files
     {
       resolve: "gatsby-plugin-react-svg",
       options: {
@@ -50,9 +61,14 @@ module.exports = {
         },
       },
     },
+    // for styled-components
     `gatsby-plugin-styled-components`,
+
+    // for easy to load and responsive images
     `gatsby-transformer-sharp`,
     `gatsby-plugin-sharp`,
+
+    // for PWA
     `gatsby-plugin-offline`,
   ],
 }

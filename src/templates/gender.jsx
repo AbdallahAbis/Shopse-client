@@ -4,7 +4,7 @@ import React from "react"
 import { connect } from "react-redux"
 import { createStructuredSelector } from "reselect"
 import styled from "styled-components"
-import SearchIcon from "../components/icons/search"
+import SearchIcon from "../components/icon-components/search"
 import Layout from "../components/layout"
 import { selectLoading, selectProducts } from "../state/shop/shop.selectors"
 import { changeCategory } from "../state/utils/utils.reducer"
@@ -131,10 +131,13 @@ const CategoriesContainer = styled.div`
   }
 `
 const GenderPage = ({ location, changeCategory, products, loading }) => {
+  // getting the gender based on the location
   const gender = location.pathname.replace(/^\/+/g, "")
 
+  // Generating decoration Images
   const images = generateImages(products, loading, 2)
 
+  // handling OnClick event when a category was clicked.
   const handleClick = e => {
     const element = e.target
     const value = element.getAttribute("value")
@@ -144,7 +147,7 @@ const GenderPage = ({ location, changeCategory, products, loading }) => {
     <Layout location={location}>
       <Container>
         <Background>
-          {images &&
+          {images && // checking for images and getting the current gender's images to loop through them.
             images[gender].map(({ thumbnail }, i) => (
               <div key={i} className="men-image">
                 <Img fluid={thumbnail.imageFile.childImageSharp.fluid} />

@@ -1,5 +1,6 @@
 import { createSelector } from "reselect"
 
+// defining the State
 const initialState = {
   searchValue: "",
   searchInputStatus: "hidden",
@@ -9,7 +10,7 @@ const initialState = {
   itemColor: "",
 }
 
-//TYPES
+// TYPES
 const LISTEN_FOR_SEARCH = "LISTEN_FOR_SEARCH"
 const SEARCH_INPUT_STATUS = "SEARCH_INPUT_STATUS"
 const RESET_SEARCH_VALUE = "RESET_SEARCH_VALUE"
@@ -18,7 +19,7 @@ const SELECT_CATEGORY = "SELECT_CATEGORY"
 const SELECT_ITEM_SIZE = "SELECT_ITEM_SIZE"
 const SELECT_ITEM_COLOR = "SELECT_ITEM_COLOR"
 
-//ACTIONS
+// ACTIONS
 export const changeSearch = value => ({
   type: LISTEN_FOR_SEARCH,
   payload: value,
@@ -74,7 +75,7 @@ export const selectItemColor = createSelector(
   utils => utils.itemColor
 )
 
-//REDUCER
+// REDUCER
 
 const utilsReducer = (state = initialState, action) => {
   switch (action.type) {

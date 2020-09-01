@@ -57,15 +57,22 @@ const ImageContainer = styled.div`
 `
 
 const Slider = ({ images }) => {
+  // get and set the current image's index
   const [activeIndex, setActiveIndex] = useState(images.length - 1)
 
+  // slide to the previous image
   const slidePrev = () => {
+    // if the user reaches the end of images then return to the first one.
     if (activeIndex === images.length - 1) return setActiveIndex(0)
+    // if not then go to the next image
     setActiveIndex(activeIndex + 1)
   }
 
+  // slide to the next image
   const slideNext = () => {
+    // if the user reaches the end of images then return to the first one.
     if (activeIndex === 0) return setActiveIndex(images.length - 1)
+    // if not then go to the previous image
     setActiveIndex(activeIndex - 1)
   }
 

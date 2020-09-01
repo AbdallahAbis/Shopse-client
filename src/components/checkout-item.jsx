@@ -3,7 +3,7 @@ import React from "react"
 import { connect } from "react-redux"
 import styled, { css } from "styled-components"
 import { removeItem, addItem } from "../state/cart/cart.actions"
-import Remove from "./icons/remove"
+import Remove from "./icon-components/remove"
 import device from "../theme/media"
 
 const quantityButtons = css`
