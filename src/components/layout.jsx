@@ -1,4 +1,4 @@
-import { graphql, useStaticQuery } from "gatsby"
+import { graphql, StaticQuery, useStaticQuery } from "gatsby"
 import React from "react"
 import { connect } from "react-redux"
 import { createStructuredSelector } from "reselect"
@@ -10,6 +10,7 @@ import { selectLoading } from "../state/shop/shop.selectors"
 import device from "../theme/media"
 import Header from "./header"
 import Loader from "./loader"
+import HeadHelmet from "../utils/head-helmet"
 
 // global styles for the site
 const GlobalStyles = createGlobalStyle`
@@ -111,9 +112,16 @@ select{
 `
 
 const Layout = ({ children, location, loading, products, fetchProducts }) => {
-  // Querying data from Strapi
+  // Querying data from Strapi and SiteMetaData
   const data = useStaticQuery(graphql`
     {
+      site {
+        siteMetadata {
+          title
+          siteUrl
+          description
+        }
+      }
       products: strapi {
         men: man {
           clothes: men_clothes {
@@ -304,11 +312,12 @@ const Layout = ({ children, location, loading, products, fetchProducts }) => {
   return loading ? (
     <Loader />
   ) : (
-    <>
+    <div id="root">
+      <HeadHelmet metadata={data.site.siteMetadata} />
       <GlobalStyles location={location} />
       <Header location={location} />
       <main>{children}</main>
-    </>
+    </div>
   )
 }
 

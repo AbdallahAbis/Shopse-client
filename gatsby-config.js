@@ -61,14 +61,13 @@ module.exports = {
         },
       },
     },
-    // for styled-components
-    `gatsby-plugin-styled-components`,
+    `gatsby-plugin-react-helmet`, // for site metadata and SEO
+    `gatsby-plugin-styled-components`, // for styled-components
 
     // for easy to load and responsive images
     `gatsby-transformer-sharp`,
     `gatsby-plugin-sharp`,
 
-    // for PWA
-    `gatsby-plugin-offline`,
+    `gatsby-plugin-offline`, // for PWA
   ],
 }
