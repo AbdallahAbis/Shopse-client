@@ -1,14 +1,12 @@
 import React from "react"
 import PropTypes from "prop-types"
 import { Helmet } from "react-helmet"
-import favicon from "../images/icon.png"
+import favicon from "../images/icon.ico"
 
 const HeadHelmet = ({ metadata }) => (
   <Helmet>
     <html lang="en" prefix="og: http://ogp.me/ns#" />
-    <title itemProp="name" lang="en">
-      {metadata.title}
-    </title>
+    <title>{metadata.title}</title>
     <link rel="shortcut icon" href={favicon} />
     <link rel="canonical" href="https://abisabdallah.com" />
 
