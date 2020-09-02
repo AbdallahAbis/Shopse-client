@@ -8,6 +8,7 @@ import * as fontFiles from "../fonts/fonts"
 import { fetchProducts } from "../state/shop/shop.actions"
 import { selectLoading } from "../state/shop/shop.selectors"
 import device from "../theme/media"
+import HeadHelmet from "../utils/head-helmet"
 import Header from "./header"
 import Loader from "./loader"
 
@@ -111,9 +112,16 @@ select{
 `
 
 const Layout = ({ children, location, loading, products, fetchProducts }) => {
-  // Querying data from Strapi
+  // Querying data from Strapi and SiteMetaData
   const data = useStaticQuery(graphql`
     {
+      site {
+        siteMetadata {
+          title
+          siteUrl
+          description
+        }
+      }
       products: strapi {
         men: man {
           clothes: men_clothes {
@@ -304,11 +312,12 @@ const Layout = ({ children, location, loading, products, fetchProducts }) => {
   return loading ? (
     <Loader />
   ) : (
-    <>
+    <div id="root">
+      <HeadHelmet metadata={data.site.siteMetadata} />
       <GlobalStyles location={location} />
       <Header location={location} />
       <main>{children}</main>
-    </>
+    </div>
   )
 }
 

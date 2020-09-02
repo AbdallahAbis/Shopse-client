@@ -11,7 +11,7 @@ process.env.GATSBY_CONCURRENT_DOWNLOAD = 1
 
 module.exports = {
   siteMetadata: {
-    title: `Shopse`,
+    title: `shopse.`,
     siteUrl: `https://shopse.netlify.app`,
     description: `An eCommerce website designed by M.N and developed by A.A`,
   },
@@ -43,8 +43,8 @@ module.exports = {
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
-        name: `GatsbyJS`,
-        short_name: `GatsbyJS`,
+        name: `shopse.`,
+        short_name: `shopse.`,
         start_url: `/`,
         background_color: config.colors.primary,
         theme_color: config.colors.primary,
@@ -61,14 +61,13 @@ module.exports = {
         },
       },
     },
-    // for styled-components
-    `gatsby-plugin-styled-components`,
+    `gatsby-plugin-react-helmet`, // for site metadata and SEO
+    `gatsby-plugin-styled-components`, // for styled-components
 
     // for easy to load and responsive images
     `gatsby-transformer-sharp`,
     `gatsby-plugin-sharp`,
 
-    // for PWA
-    `gatsby-plugin-offline`,
+    `gatsby-plugin-offline`, // for PWA
   ],
 }
