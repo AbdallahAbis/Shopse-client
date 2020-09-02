@@ -1,4 +1,4 @@
-import { graphql, StaticQuery, useStaticQuery } from "gatsby"
+import { graphql, useStaticQuery } from "gatsby"
 import React from "react"
 import { connect } from "react-redux"
 import { createStructuredSelector } from "reselect"
@@ -8,9 +8,9 @@ import * as fontFiles from "../fonts/fonts"
 import { fetchProducts } from "../state/shop/shop.actions"
 import { selectLoading } from "../state/shop/shop.selectors"
 import device from "../theme/media"
+import HeadHelmet from "../utils/head-helmet"
 import Header from "./header"
 import Loader from "./loader"
-import HeadHelmet from "../utils/head-helmet"
 
 // global styles for the site
 const GlobalStyles = createGlobalStyle`
