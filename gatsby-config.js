@@ -22,6 +22,8 @@ module.exports = {
     url: "http://localhost:1999",
   },
   plugins: [
+    // enables netlify cache
+    `gatsby-plugin-netlify-cache`,
     // Let's you access files
     {
       resolve: `gatsby-source-filesystem`,
