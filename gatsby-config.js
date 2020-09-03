@@ -23,7 +23,7 @@ module.exports = {
   },
   plugins: [
     // enables netlify cache
-    `gatsby-plugin-netlify-cache`,
+    `netlify-plugin-gatsby-cache`,
     // Let's you access files
     {
       resolve: `gatsby-source-filesystem`,
