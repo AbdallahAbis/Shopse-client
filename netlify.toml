@@ -1,6 +1,10 @@
 [[plugins]]
   package = "netlify-plugin-gatsby-cache"
 
+[[plugins]]
+  package = "@netlify/plugin-lighthouse"
+  [plugins.inputs]
+    audit_url = 'https://shopse.netlify.app/'
 
 [[headers]]
   # Define which paths this specific [[headers]] block will cover.
