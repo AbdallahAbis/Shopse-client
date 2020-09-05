@@ -18,14 +18,14 @@ const image = css`
 
   &:last-child {
     width: 22rem;
-    height: 30rem;
+    height: 35rem;
     top: 50%;
   }
 
   .gatsby-image-wrapper {
     width: 100%;
     height: 100%;
-    border: 0.5px solid var(--color-tertiary);
+    /* border: 0.5px solid var(--color-tertiary); */
   }
 `
 

@@ -33,9 +33,9 @@ const Container = styled.div`
 
   &::before {
     content: "";
-    height: 100vh;
+    min-height: 100vh;
     width: 100%;
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     z-index: -1;
@@ -48,25 +48,24 @@ const Container = styled.div`
     // Media Query ...................
 
     @media ${device.tabPort} {
-      background: linear-gradient(
-        to bottom,
-        var(--color-secondary) 50%,
-        var(--color-primary) 50%
-      );
+      background: transparent;
     }
   }
 
   // Media Query ...................
 
+  @media ${device.tabLand} {
+    margin-bottom: 5rem;
+  }
   @media ${device.tabPort} {
     grid-template-columns: 1fr;
     grid-template-rows: 1fr 1fr;
-
-    margin-bottom: 5rem;
-
     align-items: start;
   }
 
+  @media ${device.phone} {
+    margin-bottom: 10rem;
+  }
   // Media Query ...................
 
   @media ${device.verySmallPhone} {
@@ -137,6 +136,9 @@ const ActionsContainer = styled.div`
 
   // Media Query ...................
 
+  @media ${device.tabLand} {
+    margin-bottom: 7rem;
+  }
   @media ${device.tabPort} {
     width: 40%;
   }

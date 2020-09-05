@@ -19,7 +19,7 @@ const scale = keyframes`
 const Container = styled.div`
   @media ${device.tabLand} {
     width: 100%;
-    height: 7rem;
+    height: 5rem;
     background: var(--color-secondary);
 
     position: fixed;
