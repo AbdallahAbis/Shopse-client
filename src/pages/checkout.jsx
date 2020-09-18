@@ -131,10 +131,10 @@ const Title = styled.h1`
 const CheckoutPage = ({ cartItems, total, location }) => {
   return (
     <Layout location={location}>
-      {cartItems.length === 0 ? (
-        <EmptyMessage>Your cart is empty, Please Add an Item</EmptyMessage>
-      ) : (
-        <Container>
+      <Container>
+        {cartItems.length === 0 ? (
+          <EmptyMessage>Your cart is empty, Please Add an Item</EmptyMessage>
+        ) : (
           <InfoContainer>
             <Title>We are glad you're here!</Title>
             {cartItems.map((item, i) => (
@@ -147,13 +147,13 @@ const CheckoutPage = ({ cartItems, total, location }) => {
               </div>
             </CheckoutFooter>
           </InfoContainer>
-          <CheckoutContainer>
-            <Elements stripe={stripePromise}>
-              <StripeForm cartTotalAmount={total} />
-            </Elements>
-          </CheckoutContainer>
-        </Container>
-      )}
+        )}
+        <CheckoutContainer>
+          <Elements stripe={stripePromise}>
+            <StripeForm cartTotalAmount={total} />
+          </Elements>
+        </CheckoutContainer>
+      </Container>
     </Layout>
   )
 }

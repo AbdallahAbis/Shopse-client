@@ -30,6 +30,11 @@ const cartReducer = (state = INITIAL_STATE, action) => {
         ...state,
         cartItems: deleteItem(state.cartItems, action.payload),
       }
+    case CartActionTypes.RESET_CART_ITEMS:
+      return {
+        ...state,
+        cartItems: [],
+      }
     default:
       return state
   }

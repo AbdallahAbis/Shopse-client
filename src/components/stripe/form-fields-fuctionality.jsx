@@ -3,13 +3,14 @@ import {
   useElements,
   useStripe,
 } from "@stripe/react-stripe-js"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
+import { connect } from "react-redux"
+import { resetCartItems } from "../../state/cart/cart.actions"
 import FormFields from "./form-fields"
 import SuccessMessage from "./success-message"
 import validateInfo from "./validation"
-import { useEffect } from "react"
 
-const FormFunc = ({ clientSecret, error, setError }) => {
+const FormFunc = ({ clientSecret, error, setError, resetCartItems, total }) => {
   const [succeeded, setSucceeded] = useState(false)
   const [processing, setProcessing] = useState(false)
   const [data, setData] = useState({
@@ -78,6 +79,7 @@ const FormFunc = ({ clientSecret, error, setError }) => {
       setError(null)
       setSucceeded(true)
       setProcessing(false)
+      resetCartItems()
     }
   }
   return succeeded ? (
@@ -98,4 +100,8 @@ const FormFunc = ({ clientSecret, error, setError }) => {
   )
 }
 
-export default FormFunc
+const mapDispatchToProps = dispatch => ({
+  resetCartItems: () => dispatch(resetCartItems()),
+})
+
+export default connect(null, mapDispatchToProps)(FormFunc)

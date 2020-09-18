@@ -5,7 +5,7 @@ const Message = styled.p`
   text-align: center;
   font-size: ${({ place }) => (place === "cart" ? "1.4rem" : "1.6rem")};
   font-weight: ${({ place }) => (place === "cart" ? 300 : 700)};
-  margin-top: ${({ place }) => (place === "cart" ? "6rem" : "20%")};
+  margin-top: 6rem;
 `
 
 const EmptyMessage = ({ children, ...props }) => (

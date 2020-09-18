@@ -1,9 +1,5 @@
 import React from "react"
 import styled, { keyframes } from "styled-components"
-import { connect } from "react-redux"
-import { createStructuredSelector } from "reselect"
-import { selectCartTotal } from "../../state/cart/cart.selectors"
-
 const grow = keyframes`
 
 to{
@@ -39,7 +35,7 @@ const Succeeded = styled.p`
   }
 `
 
-const Total = styled.p`
+const Message = styled.p`
   margin: 0 auto;
   color: var(--color-text);
   position: relative;
@@ -48,20 +44,23 @@ const Total = styled.p`
   width: 70%;
   text-align: center;
 
-  span {
+  a {
+    color: #7795ff;
     font-weight: 700;
   }
 `
 
-const SuccessMessage = ({ total }) => (
+const SuccessMessage = () => (
   <div>
     <Succeeded>Your test payment succeeded</Succeeded>
-    <Total>
-      <span>${total.toFixed(2)}</span> was fakely set to my Stripe test account.
-    </Total>
+    <Message>
+      Kindly check out{" "}
+      <a href="https://abisabdallah.com/" target="_blank">
+        my website
+      </a>
+      for more projects.
+    </Message>
   </div>
 )
-const mapStateToProps = createStructuredSelector({
-  total: selectCartTotal,
-})
-export default connect(mapStateToProps)(SuccessMessage)
+
+export default SuccessMessage
